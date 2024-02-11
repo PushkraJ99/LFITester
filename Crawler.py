@@ -20,6 +20,17 @@ def get_links_creds(url,creds_str):
 		href = urljoin(url, href)
 		if domain in href:
 			links.add(href)
+
+	# UPGRADE: add searching of "img src=" tags 
+	for src_tag in soup.find_all('img'):
+		href = src_tag.get("src")
+		if href == "" or href is None:
+			continue
+		# Join the URL if it's relative
+		href = urljoin(url, href)
+		# This if statement ensures that all the URLs tested will be internal
+		if domain in href:
+			links.add(href)
 	return links
 
 
